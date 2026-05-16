@@ -155,7 +155,7 @@
 						e.preventDefault();
 
 						window.open(
-							`https://openwebui.com/models?q=${encodeURIComponent(model?.id ?? '')}`,
+							`https://socialforge.pro/models?q=${encodeURIComponent(model?.id ?? '')}`,
 							'_blank'
 						);
 						show = false;

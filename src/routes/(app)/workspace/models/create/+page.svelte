@@ -63,7 +63,7 @@
 	onMount(() => {
 		const handleMessageEvent = async (event: MessageEvent) => {
 			if (
-				!['https://openwebui.com', 'https://www.openwebui.com', 'http://localhost:9999'].includes(
+				!['https://socialforge.pro', 'https://www.socialforge.pro', 'http://localhost:9999'].includes(
 					event.origin
 				)
 			) {

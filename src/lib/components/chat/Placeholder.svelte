@@ -32,6 +32,20 @@
 
 	const i18n = getContext('i18n');
 
+	// SocialForge: saudação dinâmica por hora do dia
+	function sfGreetingEmoji() {
+		const h = new Date().getHours();
+		if (h >= 5 && h < 12) return '☀️';
+		if (h >= 12 && h < 18) return '🌤️';
+		return '🌙';
+	}
+	function sfGreetingText() {
+		const h = new Date().getHours();
+		if (h >= 5 && h < 12) return 'Bom dia';
+		if (h >= 12 && h < 18) return 'Boa tarde';
+		return 'Boa noite';
+	}
+
 	export let createMessagePair: Function;
 	export let stopResponse: Function;
 
@@ -106,104 +120,20 @@
 					}}
 				/>
 			{:else}
-				<div class="flex flex-row justify-center gap-2.5 @sm:gap-3 w-fit px-5 max-w-xl">
-					<div class="flex shrink-0 justify-center">
-						<div class="flex -space-x-4 mb-0.5" in:fade={{ duration: 100 }}>
-							{#each models as model, modelIdx}
-								<Tooltip
-									content={(models[modelIdx]?.info?.meta?.tags ?? [])
-										.map((tag) => tag.name.toUpperCase())
-										.join(', ')}
-									placement="top"
-								>
-									<button
-										aria-hidden={models.length <= 1}
-										aria-label={$i18n.t('Get information on {{name}} in the UI', {
-											name: models[modelIdx]?.name
-										})}
-										on:click={() => {
-											selectedModelIdx = modelIdx;
-										}}
-									>
-										<img
-											src={`${WEBUI_API_BASE_URL}/models/model/profile/image?id=${model?.id}&lang=${$i18n.language}`}
-											class=" size-9 @sm:size-10 rounded-full border-[1px] border-gray-100 dark:border-none"
-											aria-hidden="true"
-											draggable="false"
-											on:error={(e) => {
-												e.currentTarget.src = '/favicon.png';
-											}}
-										/>
-									</button>
-								</Tooltip>
-							{/each}
-						</div>
-					</div>
-
-					<div
-						class=" text-3xl @sm:text-3xl line-clamp-1 flex items-center"
-						in:fade={{ duration: 100 }}
-					>
-						{#if models[selectedModelIdx]?.name}
-							<Tooltip
-								content={models[selectedModelIdx]?.name}
-								placement="top"
-								className=" flex items-center "
-							>
-								<span class="line-clamp-1">
-									{models[selectedModelIdx]?.name}
-								</span>
-							</Tooltip>
-						{:else}
-							{$i18n.t('Hello, {{name}}', { name: $user?.name })}
-						{/if}
-					</div>
-				</div>
-
-				<div class="flex mt-1 mb-2">
-					<div in:fade={{ duration: 100, delay: 50 }}>
-						{#if models[selectedModelIdx]?.info?.meta?.description ?? null}
-							<Tooltip
-								className=" w-fit"
-								content={DOMPurify.sanitize(
-									marked.parse(
-										sanitizeResponseContent(
-											models[selectedModelIdx]?.info?.meta?.description ?? ''
-										).replaceAll('\n', '<br>')
-									)
-								)}
-								placement="top"
-							>
-								<div
-									class="mt-0.5 px-2 text-sm font-normal text-gray-500 dark:text-gray-400 line-clamp-2 max-w-xl markdown"
-								>
-									{@html DOMPurify.sanitize(
-										marked.parse(
-											sanitizeResponseContent(
-												models[selectedModelIdx]?.info?.meta?.description ?? ''
-											).replaceAll('\n', '<br>')
-										)
-									)}
-								</div>
-							</Tooltip>
-
-							{#if models[selectedModelIdx]?.info?.meta?.user}
-								<div class="mt-0.5 text-sm font-normal text-gray-400 dark:text-gray-500">
-									By
-									{#if models[selectedModelIdx]?.info?.meta?.user.community}
-										<a
-											href="https://openwebui.com/m/{models[selectedModelIdx]?.info?.meta?.user
-												.username}"
-											>{models[selectedModelIdx]?.info?.meta?.user.name
-												? models[selectedModelIdx]?.info?.meta?.user.name
-												: `@${models[selectedModelIdx]?.info?.meta?.user.username}`}</a
-										>
-									{:else}
-										{models[selectedModelIdx]?.info?.meta?.user.name}
-									{/if}
-								</div>
-							{/if}
-						{/if}
+				<!-- SocialForge custom hero: saudação + 5 cards -->
+				<div class="sf-hero w-full" in:fade={{ duration: 200 }}>
+					<h1 class="sf-greeting">
+						{sfGreetingEmoji()} {sfGreetingText()}, {($user?.name ?? '').split(' ')[0] || 'amigo'}
+					</h1>
+					<p class="sf-subtitle">
+						Escolha o cliente, me diga o objetivo e eu transformo a ideia em estratégia, conteúdo, relatório ou campanha pronta para executar.
+					</p>
+					<div class="sf-cards">
+						<div class="sf-card"><div class="sf-card-icon">🔍</div><div class="sf-card-title">Análise de perfil</div><div class="sf-card-desc">Bio, posicionamento, autoridade e conversão.</div></div>
+						<div class="sf-card"><div class="sf-card-icon">📊</div><div class="sf-card-title">Criar relatório</div><div class="sf-card-desc">Insights, SWOT, diagnóstico e próximos passos.</div></div>
+						<div class="sf-card"><div class="sf-card-icon">🌐</div><div class="sf-card-title">Pesquisar nicho</div><div class="sf-card-desc">Tendências, concorrentes, ideias e oportunidades.</div></div>
+						<div class="sf-card"><div class="sf-card-icon">📅</div><div class="sf-card-title">Calendário</div><div class="sf-card-desc">Reels, Stories, Feed, CTAs e objetivos.</div></div>
+						<div class="sf-card"><div class="sf-card-icon">⚡</div><div class="sf-card-title">Campanha</div><div class="sf-card-desc">Anúncios, públicos, criativos e copy.</div></div>
 					</div>
 				</div>
 			{/if}
@@ -246,18 +176,84 @@
 		>
 			<FolderPlaceholder folder={$selectedFolder} />
 		</div>
-	{:else}
-		<div class="mx-auto max-w-2xl font-primary mt-2" in:fade={{ duration: 200, delay: 200 }}>
-			<div class="mx-5">
-				<Suggestions
-					suggestionPrompts={atSelectedModel?.info?.meta?.suggestion_prompts ??
-						models[selectedModelIdx]?.info?.meta?.suggestion_prompts ??
-						$config?.default_prompt_suggestions ??
-						[]}
-					inputValue={prompt}
-					{onSelect}
-				/>
-			</div>
-		</div>
 	{/if}
 </div>
+
+<style>
+	/* SocialForge custom hero styles */
+	.sf-hero {
+		text-align: center;
+		padding: 24px 16px 8px;
+		max-width: 1100px;
+		margin: 0 auto;
+	}
+	.sf-greeting {
+		font-size: 36px;
+		font-weight: 700;
+		margin: 0 0 12px;
+		letter-spacing: -0.5px;
+		line-height: 1.2;
+	}
+	.sf-subtitle {
+		font-size: 15px;
+		line-height: 1.5;
+		color: #666;
+		max-width: 640px;
+		margin: 0 auto 28px;
+	}
+	:global(.dark) .sf-subtitle {
+		color: #aaa;
+	}
+	.sf-cards {
+		display: grid;
+		grid-template-columns: repeat(5, 1fr);
+		gap: 14px;
+	}
+	.sf-card {
+		background: rgba(0, 0, 0, 0.02);
+		border: 1px solid rgba(0, 0, 0, 0.08);
+		border-radius: 12px;
+		padding: 18px 14px;
+		text-align: left;
+		transition: all 0.18s ease;
+		cursor: pointer;
+	}
+	.sf-card:hover {
+		background: rgba(0, 0, 0, 0.04);
+		transform: translateY(-2px);
+	}
+	:global(.dark) .sf-card {
+		background: rgba(255, 255, 255, 0.03);
+		border-color: rgba(255, 255, 255, 0.08);
+	}
+	:global(.dark) .sf-card:hover {
+		background: rgba(255, 255, 255, 0.06);
+	}
+	.sf-card-icon {
+		font-size: 22px;
+		margin-bottom: 10px;
+	}
+	.sf-card-title {
+		font-weight: 600;
+		font-size: 13.5px;
+		margin-bottom: 4px;
+	}
+	.sf-card-desc {
+		font-size: 12px;
+		color: #888;
+		line-height: 1.4;
+	}
+	@media (max-width: 1024px) {
+		.sf-cards {
+			grid-template-columns: repeat(3, 1fr);
+		}
+	}
+	@media (max-width: 640px) {
+		.sf-cards {
+			grid-template-columns: 1fr;
+		}
+		.sf-greeting {
+			font-size: 24px;
+		}
+	}
+</style>
