@@ -3174,7 +3174,7 @@
 								</div>
 							</div>
 						{:else}
-							<div class="flex items-center h-full">
+							<div class="flex items-start h-full pt-8">
 								<Placeholder
 									{history}
 									{selectedModels}

@@ -68,79 +68,109 @@
 {/key}
 
 <style>
+	/* SocialForge custom hero — referências do V2 (chat.css) */
 	.sf-hero {
 		text-align: center;
-		padding: 24px 16px 8px;
-		max-width: 1100px;
+		padding: 42px 16px 18px;
+		max-width: 820px;
 		margin: 0 auto;
 	}
 	.sf-greeting {
-		font-size: 36px;
-		font-weight: 700;
-		margin: 0 0 12px;
-		letter-spacing: -0.5px;
-		line-height: 1.2;
+		font-size: clamp(34px, 4.1vw, 54px);
+		font-weight: 800;
+		letter-spacing: -0.06em;
+		line-height: 1.05;
+		margin: 0 0 10px;
+		display: inline-flex;
+		align-items: center;
+		gap: 14px;
+		flex-wrap: wrap;
+		justify-content: center;
 	}
 	.sf-subtitle {
-		font-size: 15px;
-		line-height: 1.5;
-		color: #666;
-		max-width: 640px;
+		max-width: 720px;
 		margin: 0 auto 28px;
+		font-size: 18px;
+		color: #5f5a55;
+		font-weight: 500;
+		line-height: 1.48;
 	}
 	:global(.dark) .sf-subtitle {
 		color: #aaa;
 	}
 	.sf-cards {
+		width: min(100%, 820px);
+		margin: 26px auto 0;
 		display: grid;
 		grid-template-columns: repeat(5, 1fr);
-		gap: 14px;
+		gap: 10px;
 	}
 	.sf-card {
-		background: rgba(0, 0, 0, 0.02);
-		border: 1px solid rgba(0, 0, 0, 0.08);
-		border-radius: 12px;
-		padding: 18px 14px;
+		min-height: 92px;
+		padding: 13px 12px;
+		border-radius: 18px;
+		background: rgba(249, 247, 244, 0.82);
+		border: 1px solid rgba(225, 219, 211, 0.95);
+		box-shadow: 0 10px 24px rgba(70, 50, 20, 0.055);
 		text-align: left;
-		transition: all 0.18s ease;
+		transition: 0.18s ease;
 		cursor: pointer;
 	}
 	.sf-card:hover {
-		background: rgba(0, 0, 0, 0.04);
 		transform: translateY(-2px);
+		background: #fffaf5;
+		border-color: #e3c19a;
+		box-shadow: 0 14px 30px rgba(70, 50, 20, 0.08);
 	}
 	:global(.dark) .sf-card {
-		background: rgba(255, 255, 255, 0.03);
-		border-color: rgba(255, 255, 255, 0.08);
+		background: rgba(31, 27, 23, 0.94);
+		border-color: #342d27;
 	}
 	:global(.dark) .sf-card:hover {
-		background: rgba(255, 255, 255, 0.06);
+		background: rgba(255, 255, 255, 0.07);
 	}
 	.sf-card-icon {
-		font-size: 22px;
-		margin-bottom: 10px;
+		width: 30px;
+		height: 30px;
+		display: grid;
+		place-items: center;
+		border-radius: 12px;
+		background: #fff1de;
+		margin-bottom: 9px;
+		font-size: 15px;
+	}
+	:global(.dark) .sf-card-icon {
+		background: rgba(244, 174, 71, 0.18);
 	}
 	.sf-card-title {
+		display: block;
 		font-weight: 600;
-		font-size: 13.5px;
+		font-size: 12px;
+		letter-spacing: -0.02em;
 		margin-bottom: 4px;
 	}
 	.sf-card-desc {
-		font-size: 12px;
+		display: block;
+		font-size: 11px;
 		color: #888;
-		line-height: 1.4;
+		line-height: 1.28;
 	}
-	@media (max-width: 1024px) {
+	@media (max-width: 768px) {
 		.sf-cards {
 			grid-template-columns: repeat(3, 1fr);
 		}
+		.sf-greeting {
+			font-size: 30px;
+			letter-spacing: -0.055em;
+		}
+		.sf-subtitle {
+			font-size: 14px;
+			line-height: 1.45;
+		}
 	}
-	@media (max-width: 640px) {
+	@media (max-width: 480px) {
 		.sf-cards {
 			grid-template-columns: 1fr;
-		}
-		.sf-greeting {
-			font-size: 24px;
 		}
 	}
 </style>
