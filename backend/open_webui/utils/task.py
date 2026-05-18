@@ -31,6 +31,12 @@ def get_task_model_id(default_model_id: str, task_model: str, task_model_externa
 
 def prompt_variables_template(template: str, variables: dict[str, str]) -> str:
     for variable, value in variables.items():
+        # SF patch: pular valores não-string (ex: dict do Filter
+        # socialforge_context_injector que persiste metadata.variables.sf
+        # entre inlet/outlet). Sem isso, .replace() levanta
+        # "replace() argument 2 must be str, not dict" e quebra o chat.
+        if not isinstance(value, str):
+            continue
         template = template.replace(variable, value)
     return template
 
