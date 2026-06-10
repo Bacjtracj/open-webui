@@ -665,6 +665,15 @@ async def lifespan(app: FastAPI):
     log.info('Installing external dependencies of functions and tools...')
     await install_tool_and_function_dependencies()
 
+    # SocialForge: upsert do context_injector Filter Function (idempotente)
+    try:
+        from open_webui.sf_extensions.install_filter import (
+            ensure_socialforge_filter_installed,
+        )
+        await ensure_socialforge_filter_installed()
+    except Exception as e:
+        log.warning('SocialForge filter install skipped: %s', e)
+
     app.state.redis = get_redis_connection(
         redis_url=REDIS_URL,
         redis_sentinels=get_sentinels_from_env(REDIS_SENTINEL_HOSTS, REDIS_SENTINEL_PORT),
@@ -1415,6 +1424,10 @@ app.add_middleware(
 
 app.mount('/ws', socket_app)
 
+
+# SocialForge SSO bridge — endpoint /sso?token=... pra signin via V3
+from open_webui.sf_extensions.sso_bridge import router as sf_sso_router
+app.include_router(sf_sso_router)
 
 app.include_router(ollama.router, prefix='/ollama', tags=['ollama'])
 app.include_router(openai.router, prefix='/openai', tags=['openai'])
