@@ -1,9 +1,14 @@
 const DELIMITER_LIST = [
 	{ left: '$$', right: '$$', display: true },
-	{ left: '$', right: '$', display: false },
+	// SocialForge: delimitadores `$ ... $` e `\( ... \)` desativados.
+	// Em texto comum PT-BR (ex.: "R$ 50 ... R$ 100", trechos com parênteses) eles
+	// capturavam o conteúdo entre dois `$` como fórmula inline; o KaTeX renderiza em
+	// modo math e COLAPSA os espaços -> palavras coladas. Math inline ainda funciona
+	// via `$$ ... $$`. Para reativar, descomente as duas linhas abaixo.
+	// { left: '$', right: '$', display: false },
 	{ left: '\\pu{', right: '}', display: false },
 	{ left: '\\ce{', right: '}', display: false },
-	{ left: '\\(', right: '\\)', display: false },
+	// { left: '\\(', right: '\\)', display: false },
 	{ left: '\\[', right: '\\]', display: true },
 	{ left: '\\begin{equation}', right: '\\end{equation}', display: true }
 ];
