@@ -22,6 +22,8 @@
 
 	import ShareChatModal from '../chat/ShareChatModal.svelte';
 	import ModelSelector from '../chat/ModelSelector.svelte';
+	import ClientSelector from '../socialforge/ClientSelector.svelte';
+	import CreditBar from '../socialforge/CreditBar.svelte';
 	import Tooltip from '../common/Tooltip.svelte';
 	import Menu from '$lib/components/layout/Navbar/Menu.svelte';
 	import UserMenu from '$lib/components/layout/Sidebar/UserMenu.svelte';
@@ -41,6 +43,14 @@
 	import { WEBUI_API_BASE_URL } from '$lib/constants';
 
 	const i18n = getContext('i18n');
+
+	// SocialForge UI flags — desligadas em 2026-05-16 a pedido do Mendes.
+	// Pra reativar: setar pra true ou expor via env/settings. Manter o markup
+	// atrás de flag (em vez de deletar) permite reverter sem buscar histórico.
+	const SF_SHOW_TEMP_CHAT = false;
+	const SF_SHOW_CONTROLS = false;
+	const SF_SHOW_USER_MENU = false;
+	const SF_SHOW_SET_DEFAULT = false;
 
 	export let initNewChat: Function;
 	export let shareEnabled: boolean = false;
@@ -114,14 +124,18 @@
 			"
 				>
 					{#if showModelSelector}
-						<ModelSelector bind:selectedModels showSetDefault={!shareEnabled} />
+						<div class="flex items-center gap-2">
+							<ModelSelector bind:selectedModels showSetDefault={SF_SHOW_SET_DEFAULT && !shareEnabled} />
+							<ClientSelector />
+							<CreditBar />
+						</div>
 					{/if}
 				</div>
 
 				<div class="self-start flex flex-none items-center text-gray-600 dark:text-gray-400">
 					<!-- <div class="md:hidden flex self-center w-[1px] h-5 mx-2 bg-gray-300 dark:bg-stone-700" /> -->
 
-					{#if $user?.role === 'user' ? ($user?.permissions?.chat?.temporary ?? true) && !($user?.permissions?.chat?.temporary_enforced ?? false) : true}
+					{#if SF_SHOW_TEMP_CHAT && ($user?.role === 'user' ? ($user?.permissions?.chat?.temporary ?? true) && !($user?.permissions?.chat?.temporary_enforced ?? false) : true)}
 						{#if !chat?.id}
 							<Tooltip content={$i18n.t(`Temporary Chat`)}>
 								<button
@@ -218,7 +232,7 @@
 						</Menu>
 					{/if}
 
-					{#if $user?.role === 'admin' || ($user?.permissions.chat?.controls ?? true)}
+					{#if SF_SHOW_CONTROLS && ($user?.role === 'admin' || ($user?.permissions.chat?.controls ?? true))}
 						<Tooltip content={$i18n.t('Controls')}>
 							<button
 								class=" flex cursor-pointer px-2 py-2 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-850 transition"
@@ -234,7 +248,7 @@
 						</Tooltip>
 					{/if}
 
-					{#if $user !== undefined && $user !== null}
+					{#if SF_SHOW_USER_MENU && $user !== undefined && $user !== null}
 						<UserMenu
 							className="w-[240px]"
 							role={$user?.role}

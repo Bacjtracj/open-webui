@@ -40,6 +40,7 @@
 		desktopEvent
 	} from '$lib/stores';
 	import { getFileContentById } from '$lib/apis/files';
+	import { installSocialForgeFetchInterceptor } from '$lib/socialforge/inject-metadata';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 	import { beforeNavigate } from '$app/navigation';
@@ -858,6 +859,7 @@
 	};
 
 	onMount(async () => {
+		installSocialForgeFetchInterceptor();
 		window.addEventListener('message', windowMessageEventHandler);
 
 		let touchstartY = 0;

@@ -49,21 +49,7 @@
 			</Tooltip>
 		{/if}
 
-		<div class="sf-hero" in:fade={{ duration: 200 }}>
-			<h1 class="sf-greeting">
-				{sfEmoji()} {sfGreeting()}, {($user?.name ?? '').split(' ')[0] || 'amigo'}
-			</h1>
-			<p class="sf-subtitle">
-				Escolha o cliente, me diga o objetivo e eu transformo a ideia em estratégia, conteúdo, relatório ou campanha pronta para executar.
-			</p>
-			<div class="sf-cards">
-				<div class="sf-card"><div class="sf-card-icon">🔍</div><div class="sf-card-title">Análise de perfil</div><div class="sf-card-desc">Bio, posicionamento, autoridade e conversão.</div></div>
-				<div class="sf-card"><div class="sf-card-icon">📊</div><div class="sf-card-title">Criar relatório</div><div class="sf-card-desc">Insights, SWOT, diagnóstico e próximos passos.</div></div>
-				<div class="sf-card"><div class="sf-card-icon">🌐</div><div class="sf-card-title">Pesquisar nicho</div><div class="sf-card-desc">Tendências, concorrentes, ideias e oportunidades.</div></div>
-				<div class="sf-card"><div class="sf-card-icon">📅</div><div class="sf-card-title">Calendário</div><div class="sf-card-desc">Reels, Stories, Feed, CTAs e objetivos.</div></div>
-				<div class="sf-card"><div class="sf-card-icon">⚡</div><div class="sf-card-title">Campanha</div><div class="sf-card-desc">Anúncios, públicos, criativos e copy.</div></div>
-			</div>
-		</div>
+		<!-- SocialForge: hero removido (sem saudação/cards) -->
 	</div>
 {/key}
 
@@ -71,9 +57,9 @@
 	/* SocialForge custom hero — referências do V2 (chat.css) */
 	.sf-hero {
 		text-align: center;
-		padding: 42px 16px 18px;
+		padding: 0 16px;
 		max-width: 820px;
-		margin: 0 auto;
+		margin: 0 auto 34px;
 	}
 	.sf-greeting {
 		font-size: clamp(34px, 4.1vw, 54px);
@@ -89,7 +75,7 @@
 	}
 	.sf-subtitle {
 		max-width: 720px;
-		margin: 0 auto 28px;
+		margin: 0 auto;
 		font-size: 18px;
 		color: #5f5a55;
 		font-weight: 500;
@@ -102,11 +88,13 @@
 		width: min(100%, 820px);
 		margin: 26px auto 0;
 		display: grid;
-		grid-template-columns: repeat(5, 1fr);
+		grid-template-columns: repeat(5, 156px);
+		justify-content: center;
 		gap: 10px;
 	}
 	.sf-card {
-		min-height: 92px;
+		width: 156px;
+		height: 131px;
 		padding: 13px 12px;
 		border-radius: 18px;
 		background: rgba(249, 247, 244, 0.82);
